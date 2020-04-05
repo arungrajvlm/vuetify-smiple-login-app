@@ -1,4 +1,3 @@
-/*eslint-disable */
 <template>
   <v-app id="inspire">
     <v-content>
@@ -7,7 +6,7 @@
           <v-col cols="12" sm="8" md="4">
             <v-card class="elevation-12">
               <v-toolbar color="primary" dark flat>
-                <v-toolbar-title>Login form</v-toolbar-title>
+                <v-toolbar-title>Login</v-toolbar-title>
                 <v-spacer />
                 <!-- <v-tooltip bottom>
                   <template v-slot:activator="{ on }">
@@ -34,7 +33,7 @@
               </v-toolbar>
               <v-card-text>
                 <v-form>
-                  <v-text-field label="Login" name="login" prepend-icon="person" type="text" />
+                  <v-text-field label="Login" name="login" prepend-icon="person" type="text"  v-model="email"/>
 
                   <v-text-field
                     id="password"
@@ -42,6 +41,7 @@
                     name="password"
                     prepend-icon="lock"
                     type="password"
+                    v-model="password"
                   />
                 </v-form>
               </v-card-text>
@@ -60,9 +60,34 @@
 <script>
 export default {
   name: 'LoginScreen',
+  // data: () => ({
+  //   valid: false,
+  //   firstname: '',
+  //   lastname: '',
+  //   nameRules: [
+  //     v => !!v || 'Name is required',
+  //     v => v.length <= 10 || 'Name must be less than 10 characters',
+  //   ],
+  //   email: '',
+  //   emailRules: [
+  //     v => !!v || 'E-mail is required',
+  //     v => /.+@.+/.test(v) || 'E-mail must be valid',
+  //   ],
+  // }),
+  data () {
+    return {
+      email: '',
+      password: ''
+    }
+  },
   methods: {
     doLogin: function (e) {
-      this.$router.replace('home')
+      const formData = {
+        email: this.email,
+        password: this.password
+      }
+      console.log(formData)
+      this.$store.dispatch('login', { email: formData.email, password: formData.password })
     }
   }
 }

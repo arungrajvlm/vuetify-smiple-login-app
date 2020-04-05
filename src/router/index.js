@@ -1,13 +1,18 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
-// import HomeTest from '../views/HomeTest'// '../components/auth/LoginScreen.vue'
+import WelecomScreen from '../views/WelecomScreen.vue'
 import LoginScreen from '../components/auth/LoginScreen.vue'
 Vue.use(VueRouter)
 
 const routes = [
   {
     path: '/',
+    name: 'WelecomScreen',
+    component: WelecomScreen
+  },
+  {
+    path: '/signin',
     name: 'LoginScreen',
     component: LoginScreen
   },
@@ -16,11 +21,6 @@ const routes = [
     name: 'Home',
     component: Home
   },
-  // {
-  //   path: '/login',
-  //   name: 'LoginScreen',
-  //   component: LoginScreen
-  // },
   {
     path: '/about',
     name: 'About',

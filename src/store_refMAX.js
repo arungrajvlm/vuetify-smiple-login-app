@@ -1,8 +1,9 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-// import axios from './axios-auth'
+import axios from './axios-auth'
 import globalAxios from 'axios'
-import router from '../router'
+
+import router from './router'
 
 Vue.use(Vuex)
 
@@ -31,48 +32,46 @@ export default new Vuex.Store({
         commit('clearAuthData')
       }, expirationTime * 1000)
     },
-    // signup ({commit, dispatch}, authData) {
-    //   axios.post('/signupNewUser?key=AIzaSyCXlVPPWknVGhfc60mt7Jkv0Xzrho7_mwc', {
-    //     email: authData.email,
-    //     password: authData.password,
-    //     returnSecureToken: true
-    //   })
-    //     .then(res => {
-    //       console.log(res)
-    //       commit('authUser', {
-    //         token: res.data.idToken,
-    //         userId: res.data.localId
-    //       })
-    //       const now = new Date()
-    //       const expirationDate = new Date(now.getTime() + res.data.expiresIn * 1000)
-    //       localStorage.setItem('token', res.data.idToken)
-    //       localStorage.setItem('userId', res.data.localId)
-    //       localStorage.setItem('expirationDate', expirationDate)
-    //       dispatch('storeUser', authData)
-    //       dispatch('setLogoutTimer', res.data.expiresIn)
-    //     })
-    //     .catch(error => console.log(error))
-    // },
-    login ({ commit, dispatch }, authData) {
-      globalAxios.get('/?action=login', {
-        email_id: authData.email,
+    signup ({ commit, dispatch }, authData) {
+      axios.post('/signupNewUser?key=AIzaSyCXlVPPWknVGhfc60mt7Jkv0Xzrho7_mwc', {
+        email: authData.email,
         password: authData.password,
-        apikey: 'api@2150',
-        returnSecureToken: true,
-        Origin: 'http://localhost:3000'
+        returnSecureToken: true
       })
         .then(res => {
           console.log(res)
-          // const now = new Date()
-          // const expirationDate = new Date(now.getTime() + res.data.expiresIn * 1000)
-          // localStorage.setItem('token', res.data.idToken)
-          // localStorage.setItem('userId', res.data.localId)
-          // localStorage.setItem('expirationDate', expirationDate)
-          // commit('authUser', {
-          //   token: res.data.idToken,
-          //   userId: res.data.localId
-          // })
-          // dispatch('setLogoutTimer', res.data.expiresIn)
+          commit('authUser', {
+            token: res.data.idToken,
+            userId: res.data.localId
+          })
+          const now = new Date()
+          const expirationDate = new Date(now.getTime() + res.data.expiresIn * 1000)
+          localStorage.setItem('token', res.data.idToken)
+          localStorage.setItem('userId', res.data.localId)
+          localStorage.setItem('expirationDate', expirationDate)
+          dispatch('storeUser', authData)
+          dispatch('setLogoutTimer', res.data.expiresIn)
+        })
+        .catch(error => console.log(error))
+    },
+    login ({ commit, dispatch }, authData) {
+      axios.post('/verifyPassword?key=AIzaSyCXlVPPWknVGhfc60mt7Jkv0Xzrho7_mwc', {
+        email: authData.email,
+        password: authData.password,
+        returnSecureToken: true
+      })
+        .then(res => {
+          console.log(res)
+          const now = new Date()
+          const expirationDate = new Date(now.getTime() + res.data.expiresIn * 1000)
+          localStorage.setItem('token', res.data.idToken)
+          localStorage.setItem('userId', res.data.localId)
+          localStorage.setItem('expirationDate', expirationDate)
+          commit('authUser', {
+            token: res.data.idToken,
+            userId: res.data.localId
+          })
+          dispatch('setLogoutTimer', res.data.expiresIn)
         })
         .catch(error => console.log(error))
     },
